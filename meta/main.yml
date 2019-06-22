@@ -1,0 +1,8 @@
+---
+galaxy_info:
+  role_name: juankakode.ufw-harden
+  author: "juankakode"
+  description: "harden ufw defaults"
+  min_ansible_version: "2.4"
+
+dependencies: []
