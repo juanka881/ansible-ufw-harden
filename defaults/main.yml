@@ -1,0 +1,13 @@
+ufw_incoming_policy: deny
+ufw_outgoing_policy: deny
+ufw_routed_policy: deny
+ufw_allow_ntp: true
+ufw_allow_http_in: false
+ufw_allow_http_out: true
+ufw_allow_https_in: false
+ufw_allow_https_out: true
+ufw_allow_dns_out: true
+ufw_allow_ssh_in: true
+ufw_allow_ssh_out: true
+ufw_ssh_port_in: "22"
+ufw_ssh_port_out: "22"

@@ -1,0 +1,97 @@
+---
+- name: install ufw
+  apt:
+    name: ufw
+    state: present
+
+- name: disable ipv6
+  lineinfile:
+    path: "/etc/ufw/ufw.conf"
+    regexp: "^IPV6="
+    line: "IPV6=no"
+
+- name: enable ufw
+  ufw:
+    state: enabled
+
+- name: allow on loopback in
+  ufw:
+    rule: allow
+    comment: "loopback in"
+    direction: in
+    interface: lo
+
+- name: allow on loopback out
+  ufw:
+    rule: allow
+    comment: "loopback out"
+    direction: out
+    interface: lo
+
+- name: allow ntp
+  when: ufw_allow_ntp | bool
+  ufw:
+    rule: allow
+    comment: "ntp out"
+    direction: out
+    proto: udp
+    port: "123"
+
+- name: allow http out
+  when: ufw_allow_http_out | bool
+  ufw:
+    rule: allow
+    comment: "http out"
+    direction: out
+    proto: tcp
+    port: "80"
+
+- name: allow https out
+  when: ufw_allow_https_out | bool
+  ufw:
+    rule: allow
+    comment: "https out"
+    direction: out
+    proto: tcp
+    port: "443"
+
+- name: allow dns out
+  when: ufw_allow_dns_out | bool
+  ufw:
+    rule: allow
+    comment: "dns out"
+    direction: out
+    port: "53"
+
+- name: allow ssh in
+  when: ufw_allow_ssh_in | bool
+  ufw:
+    rule: allow
+    comment: "ssh in"
+    direction: in
+    proto: tcp
+    port: "{{ ufw_ssh_port_in }}"
+
+- name: allow ssh out
+  when: ufw_allow_ssh_out | bool
+  ufw:
+    rule: allow
+    comment: "ssh out"
+    direction: out
+    proto: tcp
+    port: "{{ ufw_ssh_port_out }}"
+
+- name: set incoming policy
+  ufw:
+    policy: "{{ ufw_incoming_policy }}"
+    direction: incoming
+
+- name: set outgoing policy
+  ufw:
+    policy: "{{ ufw_outgoing_policy }}"
+    direction: outgoing
+
+- name: set routed policy
+  ufw:
+    policy: "{{ ufw_routed_policy }}"
+    direction: routed
